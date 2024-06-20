@@ -1,0 +1,71 @@
+---
+import CardPlayButton from "@components/CardPlayButton";
+import MusicTable from "@components/MusicTable.astro";
+import Layout from "@layouts/Layout.astro";
+import { allPlaylists, songs } from "@lib/data";
+
+const { id } = Astro.params;
+
+const playlist = allPlaylists.find((playlist) => playlist.id === id);
+const playlistSongs = playlist
+  ? songs.filter((song) => song.albumId === playlist.albumId)
+  : [];
+
+const durationAcc: number = playlistSongs.reduce((acc, song) => {
+  const [minutes, seconds] = song.duration.split(":");
+  return acc + parseInt(minutes ?? 0) * 60 + parseInt(seconds ?? 0);
+}, 0);
+const hours = Math.floor(durationAcc / 60 / 24);
+const minutes = Math.ceil((durationAcc - hours * 60 * 24) / 60);
+---
+
+<Layout title=`🟢🎧 Spotify Clone - Playlist ${id} 🚀🧑‍🚀`>
+  <div
+    id="playlist-container"
+    class="flex flex-col h-full relative bg-zinc-900 overflow-x-hidden"
+    transition:name=`playlist ${id} box`
+  >
+    <header class="flex flex-row gap-8 px-6 mt-10 z-10">
+      <picture class="aspect-square w-52 h-52 flex-none rounded-md">
+        <img
+          src=`${playlist?.cover}`
+          alt=`Cover of ${playlist?.title}`
+          class="object-cover w-full h-full shadow-lg"
+          transition:name=`playlist ${playlist?.id} image`
+        />
+      </picture>
+      <div class="flex flex-col justify-between">
+        <h2 class="flex flex-1 items-end">Playlist</h2>
+        <div>
+          <h1 class="text-7xl title-clamp font-bold block">
+            {playlist?.title}
+            <span transition:name=`playlist ${playlist?.id} title`></span>
+          </h1>
+        </div>
+        <div class="flex flex-1 items-end">
+          <div class="text-sm text-gray-300 font-normal">
+            <div transition:name=`playlist ${playlist?.id} artists`>
+              <span>{playlist?.artists.join(", ")}</span>
+            </div>
+            <p class="mt-1">
+              <span
+                >{
+                  `${playlistSongs.length} songs, about ${hours} hr ${minutes} min`
+                }</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section class="pl-6 pt-6 z-10">
+      <CardPlayButton client:load id={id ?? ""} size="large" />
+    </section>
+    <section class="p-6 z-10">
+      <MusicTable songs={playlistSongs} playlist={playlist} />
+    </section>
+    <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 to-zinc-900/80">
+    </div>
+  </div>
+</Layout>
