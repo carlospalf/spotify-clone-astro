@@ -60,7 +60,12 @@ const minutes = Math.ceil((durationAcc - hours * 60 * 24) / 60);
     </header>
 
     <section class="pl-6 pt-6 z-10">
-      <CardPlayButton client:load id={id ?? ""} size="large" />
+      <CardPlayButton
+        transition:name=`playlist ${id} button`
+        id={id ?? ""}
+        size="large"
+        client:load
+      />
     </section>
     <section class="p-6 z-10">
       <MusicTable songs={playlistSongs} playlist={playlist} />

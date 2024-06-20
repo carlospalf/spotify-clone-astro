@@ -1,4 +1,3 @@
-import React from "react";
 import { Play, Pause } from "./Player";
 import { usePlayerStore } from "@store/playerStore";
 

@@ -1,4 +1,3 @@
-import React from 'react'
 import type { Playlist, Song } from '@lib/data'
 import { Play, Pause } from './Player';
 import { usePlayerStore } from '@store/playerStore';
