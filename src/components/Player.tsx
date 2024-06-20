@@ -1,5 +1,5 @@
 import { usePlayerStore } from "@store/playerStore";
-import React, { useRef, useEffect, useState, type RefObject } from "react";
+import { useRef, useEffect, useState, type RefObject } from "react";
 import { VolumeSlider } from "./VolumeSlider";
 import { SongSlider } from "./SongSlider";
 
