@@ -1,0 +1,72 @@
+---
+import TimeIcon from "@icons/Time.astro";
+import { PlaylistPlaySongButton } from "@components/PlaylistPlaySongButton";
+
+import { type Playlist, type Song } from "@lib/data.ts";
+
+interface Props {
+  playlist?: Playlist;
+  songs?: Song[];
+}
+
+const { songs, playlist } = Astro.props;
+---
+
+<table class="table-auto text-left min-w-full divide-y divide-zinc-600/20">
+  <thead class="">
+    <th
+      class="text-gray-400 text-sm font-light px-4 py-2 items-center text-center"
+    >
+      #
+    </th>
+    <th class="text-gray-400 text-sm font-light px-4 py-2">Title</th>
+    <th class="text-gray-400 text-sm font-light px-4 py-2">Album</th>
+    <th class="text-gray-400 text-sm font-light px-4 py-2">
+      <div class="flex items-center justify-center">
+        <TimeIcon />
+      </div>
+    </th>
+  </thead>
+  <tbody>
+    <tr class="h-3"></tr>
+    {
+      playlist &&
+        songs?.map((song, index) => (
+          <tr class="group hover:bg-white/10 bg-transparent transition-all duration-500">
+            <td class="px-4 py-2 rounded-s-lg">
+              <div class="flex items-center justify-center relative">
+                <span class="flex relative opacity-100 group-hover:opacity-0">
+                  {index + 1}
+                </span>
+                <PlaylistPlaySongButton
+                  playlist={playlist}
+                  song={song}
+                  className="flex absolute opacity-0 group-hover:opacity-100 justify-center transition-all duration-300"
+                  client:load
+                />
+              </div>
+            </td>
+            <td class="flex items-center gap-2 px-4 py-2">
+              <picture>
+                <img
+                  src={song.image}
+                  alt={song.title}
+                  class="w-10 h-10 rounded-md"
+                />
+              </picture>
+              <div class="flex flex-col gap-[2px]">
+                <h3 class="">{song.title}</h3>
+                <span class="text-xs font-extralight text-gray-400">
+                  {song.artists.join(", ")}
+                </span>
+              </div>
+            </td>
+            <td class="text-sm font-light px-4 py-2">{song.album}</td>
+            <td class="text-sm font-light px-4 py-2 items-center text-center rounded-e-lg">
+              {song.duration}
+            </td>
+          </tr>
+        ))
+    }
+  </tbody>
+</table>

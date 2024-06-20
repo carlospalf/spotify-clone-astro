@@ -1,0 +1,24 @@
+---
+// import { matchPathname } from "astro/assets/utils";
+
+interface Props {
+  href: string;
+}
+
+const { href } = Astro.props;
+// console.log(href);
+// const currentPath = Astro.url;
+// console.log(currentPath);
+// const isActive = matchPathname(Astro.url, href);
+
+// class=`flex gap-4 ${isActive ? 'text-zinc-100' : 'text-zinc-400'} hover:text-zinc-100 items-center py-3 px-5 font-medium transition duration-300`
+---
+
+<li>
+  <a
+    class=`flex gap-4 text-zinc-400 hover:text-zinc-100 items-center py-3 px-5 font-medium transition duration-300`
+    href={href}
+  >
+    <slot />
+  </a>
+</li>
